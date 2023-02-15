@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app">
+      <button id="btn">ping</button>
+    </div>
+    
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+    
+      const socket = io("http://localhost:3000/internal-socket", { reconnectionDelayMax: 10000});
+      socket.emit("connection", "", (response) => {
+        console.log(response);
+      });
+      socket.on("info-microservices", (data) => {
+        console.log(data);
+      });
+      const btn = document.getElementById('btn');
+      btn.addEventListener('click', function () {
+        socket.emit("ping", "", (response) => {
+          console.log(response);
+        });
+      })
+    </script>
+  </body>
+</html>
